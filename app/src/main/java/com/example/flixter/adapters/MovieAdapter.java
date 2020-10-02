@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+
 import com.example.flixter.DetailActivity;
 import com.example.flixter.R;
 import com.example.flixter.models.Movie;
@@ -23,6 +22,8 @@ import com.example.flixter.models.Movie;
 import org.parceler.Parcels;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
@@ -88,7 +89,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 imageURL = movie.getPosterPath();
             }
 
-            Glide.with(context).load(imageURL).into(ivPoster);
+            // Build then make app
+            int radius = 30; // corner radius, higher value = more rounded
+            int margin = 0;// crop margin, set to 0 for corners with no crop
+            GlideApp.with(context).load(imageURL).fitCenter().transform(new RoundedCornersTransformation(radius, margin)).into(ivPoster);
 
             // Register click listener on whole container
             container.setOnClickListener(new View.OnClickListener() {

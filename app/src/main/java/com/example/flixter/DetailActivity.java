@@ -26,6 +26,7 @@ public class DetailActivity extends YouTubeBaseActivity {
     public static final String YOUTUBE_API_KEY = "AIzaSyCaTFJjd7_P_HdcT_Tgym_0T0D1UF0ASUE";
     public static final String VIDEOS_URL = "https://api.themoviedb.org/3/movie/%d/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
+    float rating;
     TextView tvTitle;
     TextView tvOverview;
     RatingBar ratingBar;
@@ -44,7 +45,8 @@ public class DetailActivity extends YouTubeBaseActivity {
         Movie movie = Parcels.unwrap(getIntent().getParcelableExtra("movie"));
         tvTitle.setText(movie.getTitle());
         tvOverview.setText(movie.getOverview());
-        ratingBar.setRating((float) movie.getRating());
+        rating = (float)movie.getRating();
+        ratingBar.setRating(rating);
 
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -79,7 +81,11 @@ public class DetailActivity extends YouTubeBaseActivity {
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d("DetailActivity", "onInitializationSuccess");
 
-                youTubePlayer.cueVideo(youtubeKey);
+                // If the rating is greater than 5, auto play the trailer
+                if (rating > 5){
+                    youTubePlayer.loadVideo(youtubeKey);
+                }
+                else youTubePlayer.cueVideo(youtubeKey);
             }
 
             @Override
